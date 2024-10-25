@@ -9,8 +9,8 @@ namespace DesafioProjetoHospedagem.Models
     public class Pessoa
     {
         public Pessoa() { }
-
-        public Pessoa(string nome, string sobrenome, int idade){
+        public Pessoa(string nome, string sobrenome, int idade)
+        {
             Nome = nome;
             Sobrenome = sobrenome;
             Idade = idade;
