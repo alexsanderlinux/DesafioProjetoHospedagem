@@ -12,18 +12,15 @@ Reserva reserva = new Reserva();
 
 
 
-
-
-
 while(exbirMenu)
 {
     Console.WriteLine("Bem vindo ao Sistema de hospedagem.");
     Console.WriteLine("Escolha a opção desejada abaixo:");
-    Console.WriteLine("1 - Checkin e Cadastrar hospedes.");
-    Console.WriteLine("2 - Listar hospedes.");
-    Console.WriteLine("3 - Obter quantidade de hospedes.");
-    Console.WriteLine("4 - Hospedar na suite.");
-    Console.WriteLine("5 - Checkout e Baixa na hospedagem.");
+    Console.WriteLine("1 - Criar reserva.");
+    Console.WriteLine("2 - Listar hospedes da reserva.");
+    Console.WriteLine("3 - Obter quantidade de hospedes da reserva.");
+    Console.WriteLine("4 - Cadastrar suite.");
+    Console.WriteLine("5 - Escolha quantos dias você deseja reservar e obtenha os valores da reserva.");
     Console.WriteLine("6 - Para sair do programa.");
     
     string opcao = Console.ReadLine();
@@ -33,15 +30,15 @@ while(exbirMenu)
         case "1":
         {
            Console.Clear();
-           Console.WriteLine("Cadastrar hospedes.");
-           reserva.CadastrarHospedes();           
+           Console.WriteLine("Criar reserva.");
+           reserva.CadastrarReserva();           
            break;
         }
 
         case "2":
         {
             Console.Clear();
-            Console.WriteLine("Hospedes cadastrados.");
+            Console.WriteLine("Hospedes cadastrados na reserva.");
             reserva.Listar();
             break;
         }
@@ -49,7 +46,7 @@ while(exbirMenu)
         case "3":
         {
             Console.Clear();
-            Console.WriteLine("Quantidade:");
+            Console.WriteLine("Quantidade de hospedes da reserva:");
             int oterRetorno = reserva.ObterQuantidadeHospedes();
             Console.WriteLine(oterRetorno);
 
@@ -58,7 +55,8 @@ while(exbirMenu)
         case "4":
         {
             Console.Clear();
-            Console.WriteLine("Hospedagem na suite abaixo.");
+            Console.WriteLine("Suites:");
+            reserva.CadastrarSuite();
             
             break;
         }
@@ -67,8 +65,11 @@ while(exbirMenu)
         case "5":
         {
             Console.Clear();
-            Console.WriteLine("Checkout e Baixa na hospedagem.");
+            Console.WriteLine("Segue abaixo a confirmação da reserva e o preço final das diárias.");
+            reserva.CalcularValorDiaria();
             
+            //Console.WriteLine(recRetornoReserva);
+
             break;
         }
 

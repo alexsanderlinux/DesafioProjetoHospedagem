@@ -18,7 +18,7 @@ namespace DesafioProjetoHospedagem.Models
 
         public override string ToString()
         {
-            return $"Hospede: {this.Nome} {this.Sobrenome} {this.Idade}";
+            return $"Hospede: {this.NomeCompleto} {this.Idade}";
         }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
