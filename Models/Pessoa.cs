@@ -15,7 +15,6 @@ namespace DesafioProjetoHospedagem.Models
             Sobrenome = sobrenome;
             Idade = idade;
         }
-
         public override string ToString()
         {
             return $"Hospede: {this.NomeCompleto} {this.Idade}";
@@ -24,6 +23,5 @@ namespace DesafioProjetoHospedagem.Models
         public string Sobrenome { get; set; }
         public int Idade { get; set; }
         public string NomeCompleto => $"{Nome} {Sobrenome}".ToUpper();
-
     }
 }

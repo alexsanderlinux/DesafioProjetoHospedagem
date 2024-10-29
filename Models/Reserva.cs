@@ -1,22 +1,26 @@
+using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
+
 namespace DesafioProjetoHospedagem.Models
 {
     public class Reserva
     {
         public List<Pessoa> hospedes = new List<Pessoa>();
-        public List<Suite> suites = new List<Suite>();
+        public List<Suite> reservas = new List<Suite>();
+        public Suite suite = new Suite();
+        public List<Suite> carregaListaSuites()
+        {
+            List<Suite> suites = new List<Suite>();
+            suites.Add(new Suite(tipoSuite: "Simples", capacidade: 2, valorDiaria: 30, identificacao: 1, 0));
+            suites.Add(new Suite(tipoSuite: "Master Comum", capacidade: 3, valorDiaria: 60, identificacao: 2, 0));
+            suites.Add(new Suite(tipoSuite: "Master Premium", capacidade: 3, valorDiaria: 90, identificacao: 3, 0));
+            suites.Add(new Suite(tipoSuite: "Master Plus", capacidade: 4, valorDiaria: 120, identificacao: 4, 0));
+            suites.Add(new Suite(tipoSuite: "Mega blaster", capacidade: 4, valorDiaria: 150, identificacao: 5, 0));
+            suites.Add(new Suite(tipoSuite: "Blaster ultra suite premium", capacidade: 5, valorDiaria: 300, identificacao: 6, 0));
 
-        Suite suite = new Suite();
+            return suites;
+        }
 
-        Suite novaSuite1 = new Suite(tipoSuite: "Simples", capacidade: 2, valorDiaria: 30, identificacao: 1, 0);
-        Suite novaSuite2 = new Suite(tipoSuite: "Master Comum", capacidade: 3, valorDiaria: 60, identificacao: 2, 0);
-        Suite novaSuite3 = new Suite(tipoSuite: "Master Premium", capacidade: 3, valorDiaria: 90, identificacao: 3, 0);
-        Suite novaSuite4 = new Suite(tipoSuite: "Master Plus", capacidade: 4, valorDiaria: 120, identificacao: 4, 0);
-        Suite novaSuite5 = new Suite(tipoSuite: "Mega blaster", capacidade: 4, valorDiaria: 150, identificacao: 5, 0);
-        Suite novaSuite6 = new Suite(tipoSuite: "Blaster ultra suite premium", capacidade: 5, valorDiaria: 300, identificacao: 6, 0);
-
-        
-        
-        //public Suite Suite { get; set; }
         public int DiasReservados { get; set; }
         public Reserva(){ }
         public Reserva(int diasReservados)
@@ -81,16 +85,10 @@ namespace DesafioProjetoHospedagem.Models
 
         public void CadastrarSuite()
         {
+            
             Console.WriteLine("Escolha uma suite abaixo: ");
             //preencher a lista de suites globalmente
-            suites.Add(novaSuite1);
-            suites.Add(novaSuite2);
-            suites.Add(novaSuite3);
-            suites.Add(novaSuite4);
-            suites.Add(novaSuite5);
-            suites.Add(novaSuite6);
-
-            foreach (var suite in suites)
+            foreach (var suite in carregaListaSuites())
             {
                 Console.WriteLine(suite);
             }
@@ -98,14 +96,17 @@ namespace DesafioProjetoHospedagem.Models
             string suiteEscolhida = Console.ReadLine();
             int convSuiteEscolhida = Convert.ToInt32(suiteEscolhida);
 
-            var indice = suites.FindIndex(suites => suites.Identificacao == convSuiteEscolhida);
+            var indice = carregaListaSuites().FindIndex(suites => suites.Identificacao == convSuiteEscolhida);
 
             int quantidadeDeHospedes = ObterQuantidadeHospedes();
             
+            Console.WriteLine("Quantos dias você deseja reservar");
 
+            string obterDiasDeReserva = Console.ReadLine();
+            int convDiasDeReserva = Convert.ToInt32(obterDiasDeReserva);
             
 
-            foreach (var suite in suites)
+            foreach (var suite in carregaListaSuites())
             {
                 Console.WriteLine(suite);
 
@@ -113,28 +114,18 @@ namespace DesafioProjetoHospedagem.Models
                 {
                     throw new ArgumentException("não foi possivel cadastrar reserva nesta suite, pois a capacidade é inferior ao numero de hospedes");                    
                 }
-                
+                else if(indice+1 == convSuiteEscolhida && convSuiteEscolhida == suite.Identificacao)
+                {
+                    reservas.Add(new Suite (suite.TipoSuite, suite.Capacidade, suite.ValorDiaria, suite.Identificacao, convDiasDeReserva));
+                }
             }
+
             Console.Clear();
-
-            Console.WriteLine("Quantos dias você deseja reservar");
-
-            string obterDiasDeReserva = Console.ReadLine();
-            int convDiasDeReserva = Convert.ToInt32(obterDiasDeReserva);
-
-            if(indice+1 == convSuiteEscolhida)
-            {
-                suite.DiasReservados = convDiasDeReserva;
-            }
-
             Console.WriteLine("Suite cadastrada com êxito.");
 
-                   
-           
-
-            
         }
 
+        
         
         public int ObterQuantidadeHospedes()
         {
@@ -143,8 +134,21 @@ namespace DesafioProjetoHospedagem.Models
         }
         public void CalcularValorDiaria()
         {
-            Console.WriteLine(suites);
-            //Console.WriteLine(suite.ValorDiaria * suite.DiasReservados);         
+            foreach (var reserva in reservas)
+            {
+                decimal resultado = reserva.ValorDiaria * reserva.DiasReservados;
+                Console.WriteLine(reserva);
+                Console.WriteLine(resultado.ToString("C"));  
+                
+                if(reserva.DiasReservados >= 10)
+                {
+                    decimal dezPorcento = resultado * 0.1M;
+                    decimal precoComDesconto = resultado - dezPorcento; 
+                    Console.WriteLine($"Você foi contemplado com 10% de desconto "+
+                     ""+$"e preço final de sua estadia que era de {resultado.ToString("C")}, "+
+                    ""+$"passou a ser de {precoComDesconto.ToString("C")}. ");
+                }       
+            }
         } 
         
     }
